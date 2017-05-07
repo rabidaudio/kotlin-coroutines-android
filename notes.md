@@ -21,12 +21,20 @@ make 2 network requests, and show error for either
 make network request, get user input from a dialog, make second request
 
 
+======
+
+Observable.create => suspendCancellableCoroutine
+
+
+FIXD flowchart
+
+
 https://github.com/Kotlin/kotlinx.coroutines
 https://github.com/Kotlin/kotlinx.coroutines/tree/master/ui/kotlinx-coroutines-android
 https://github.com/Kotlin/kotlinx.coroutines
 http://kotlinlang.org/docs/reference/coroutines.html
 https://github.com/square/retrofit
 
-Tesler’s Law of Conservation as Complexity
-Larry Tesler
-You cannot reduce the complexity of a given task beyond a certain point. Once you’ve reached that point, you can only shift the burden around.
+
+
+Shift the burden in to libraries. Now we can shift the burden into the language. Benefits: compiler checking + safety.
