@@ -1,7 +1,7 @@
 package audio.rabid.debug.examples
 
 import android.app.Activity
-import android.support.v7.app.AlertDialog
+import android.app.AlertDialog
 import kotlinx.coroutines.experimental.suspendCancellableCoroutine
 
 /**
@@ -19,6 +19,6 @@ class ConfirmationDialogActivity : Activity() {
                 .create()
 
         dialog.show()
-        cont.invokeOnCompletion { dialog.dismiss() }
+        cont.invokeOnCompletion { if(cont.isCancelled) dialog.dismiss() }
     }
 }

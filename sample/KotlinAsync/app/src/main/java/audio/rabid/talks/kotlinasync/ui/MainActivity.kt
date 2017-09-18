@@ -3,26 +3,22 @@ package audio.rabid.talks.kotlinasync.ui
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
-import audio.rabid.talks.kotlinasync.*
+import audio.rabid.talks.kotlinasync.R
 import audio.rabid.talks.kotlinasync.backend.BluetoothDevice
 import audio.rabid.talks.kotlinasync.backend.State
 import audio.rabid.talks.kotlinasync.helpers.ActivityResultMixin
 import audio.rabid.talks.kotlinasync.helpers.BaseActivity
+import audio.rabid.talks.kotlinasync.helpers.JobManagerMixin.ManagedJob.LifecycleEnd.onStop
 import audio.rabid.talks.kotlinasync.helpers.transaction
 import audio.rabid.talks.kotlinasync.ui.fragments.CodesFragment
 import audio.rabid.talks.kotlinasync.ui.fragments.ErrorFragment
 import audio.rabid.talks.kotlinasync.ui.fragments.InProgressFragment
-import audio.rabid.talks.kotlinasync.view_model.implementation.MockCoroutineViewModel
 import audio.rabid.talks.kotlinasync.view_model.CoroutineViewModel
+import audio.rabid.talks.kotlinasync.view_model.implementation.MockCoroutineViewModel
 import kotlinx.coroutines.experimental.CancellationException
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.suspendCancellableCoroutine
 
 class MainActivity : BaseActivity(), ActivityResultMixin {
-
-    private var job: Job? = null
 
     private val viewModel: CoroutineViewModel = MockCoroutineViewModel(this)
 
@@ -33,14 +29,11 @@ class MainActivity : BaseActivity(), ActivityResultMixin {
 
     override fun onStart() {
         super.onStart()
-        job = launch(UI) {
+
+        launchSingleTask("mainTask", end = onStop) {
+
             viewModel.execute()
         }
-    }
-
-    override fun onStop() {
-        job?.cancel()
-        super.onStop()
     }
 
     fun onStateChanged(state: State) {

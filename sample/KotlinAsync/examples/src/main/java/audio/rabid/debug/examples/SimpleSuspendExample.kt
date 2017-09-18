@@ -1,5 +1,8 @@
 package audio.rabid.debug.examples
 
+import android.os.AsyncTask
+import rx.Observable
+
 /**
  * Created by cjk on 9/17/17.
  */
@@ -17,20 +20,95 @@ interface SimpleSuspendExample {
     /**
      * Pop a confirmation dialog, suspend until dismissed, and return if they accepted or not
      */
-    suspend fun showConfirmationDialog(): Boolean
+    suspend fun showConfirmDialog(): Boolean
 
     /**
      * Start some long-running task on another thread, and suspend until it is complete
      */
-    suspend fun doLongCalculationOffThread(data: String): Int
+    suspend fun doOffThread(data: String): Int
 
     suspend fun example() {
         val data = makeNetworkRequest()
 
-        val isConfirmed = showConfirmationDialog()
+        val isConfirmed = showConfirmDialog()
 
         if (isConfirmed) {
-            val result = doLongCalculationOffThread(data)
+            val result = doOffThread(data)
+            print(result)
+        }
+    }
+}
+
+
+interface SimpleCallbackExample {
+
+    fun makeNetworkRequestCallback(callback: (String) -> Unit)
+
+    fun showConfirmDialogCallback(callback: (Boolean) -> Unit)
+
+    fun doOffThreadCallback(data: String, callback: (Int) -> Unit)
+
+    fun example() {
+        makeNetworkRequestCallback { data ->
+            showConfirmDialogCallback { isConfirmed ->
+                if (isConfirmed) doOffThreadCallback(data) { result ->
+                    print(result)
+                }
+            }
+        }
+    }
+}
+
+interface SimpleAsyncTaskExample {
+
+    fun makeNetworkRequestBlocking(): String
+    fun showConfirmDialogBlocking(): Boolean
+    fun doOffThreadCallback(data: String): Int
+
+    class SimpleAsyncTask : AsyncTask<SimpleAsyncTaskExample, Void, Int?>() {
+
+        override fun doInBackground(vararg params: SimpleAsyncTaskExample): Int? {
+            val iface = params[0]
+
+            val data = iface.makeNetworkRequestBlocking()
+            return if (iface.showConfirmDialogBlocking())
+                iface.doOffThreadCallback(data)
+            else null
+        }
+
+        override fun onPostExecute(result: Int?) {
+            if (result != null) print(result)
+        }
+    }
+
+    fun example() = SimpleAsyncTask().execute(this)
+}
+
+interface SimpleAsyncObservableExample {
+
+    fun makeNetworkRequest(): Observable<String>
+    fun showConfirmDialog(): Observable<Boolean>
+    fun doOffThread(data: String): Observable<Int>
+
+    fun example1() {
+        makeNetworkRequest().flatMap { data ->
+            showConfirmDialog()
+                    .filter { it == true }
+                    .map { data }
+        }.flatMap { data ->
+            doOffThread(data)
+        }.subscribe { result ->
+            print(result)
+        }
+    }
+
+    fun example2() {
+        makeNetworkRequest().flatMap<Int> { data ->
+            showConfirmDialog().flatMap { isConfirmed ->
+                if (isConfirmed) doOffThread(data)
+                else Observable.empty()
+            }
+        }.subscribe { result ->
             print(result)
         }
     }
@@ -40,10 +118,8 @@ interface SimpleSuspendExample {
 interface SimpleSuspendExampleConceptualImplementation {
 
     fun makeNetworkRequest(onComplete: (String?, Throwable?) -> Unit)
-
-    fun showConfirmationDialog(onComplete: (Boolean?, Throwable?) -> Unit)
-
-    fun doLongCalculationOffThread(data: String, onComplete: (Int?, Throwable?) -> Unit)
+    fun showConfirmDialog(onComplete: (Boolean?, Throwable?) -> Unit)
+    fun doOffThread(data: String, onComplete: (Int?, Throwable?) -> Unit)
 
     data class Continuation(val step: Int, val scope: Map<String, Any?>, val error: Throwable?)
 
@@ -60,7 +136,7 @@ interface SimpleSuspendExampleConceptualImplementation {
                 if (continuation.error != null) throw continuation.error
                 val data = continuation.scope["data"] as String
 
-                showConfirmationDialog(onComplete = { res, err ->
+                showConfirmDialog(onComplete = { res, err ->
                     val scope = mapOf("data" to data, "isConfirmed" to res)
                     example(Continuation(2, scope, err))
                 })
@@ -71,8 +147,12 @@ interface SimpleSuspendExampleConceptualImplementation {
                 val isConfirmed = continuation.scope["isConfirmed"] as Boolean
 
                 if (isConfirmed) {
-                    doLongCalculationOffThread(data, onComplete = { res, err ->
-                        val scope = mapOf("data" to data, "isConfirmed" to isConfirmed, "result" to res)
+                    doOffThread(data, onComplete = { res, err ->
+                        val scope = mapOf(
+                                "data" to data,
+                                "isConfirmed" to isConfirmed,
+                                "result" to res
+                        )
                         example(Continuation(3, scope, err))
                     })
                 }

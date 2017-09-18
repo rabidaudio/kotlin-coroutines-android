@@ -20,6 +20,8 @@ android {
     }
 }
 
+kotlin { experimental { coroutines 'enable' } }
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -32,9 +34,9 @@ dependencies {
     compile 'io.reactivex:rxkotlin:1.0.0-RC2'
 
     // coroutines
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.15'
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.15'
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-rx1:0.15'
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.18'
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.18'
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-rx1:0.18'
 
     // android support
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -44,6 +46,7 @@ dependencies {
 //    compile 'com.squareup.retrofit2:converter-moshi:2.2.0'
 //    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
 
+    compile "com.google.android.gms:play-services-location:11.0.4"
 
     // tests
     testCompile 'junit:junit:4.12'
