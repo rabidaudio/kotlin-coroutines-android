@@ -7,7 +7,7 @@
     <title>reveal.js</title>
 
     <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/theme/solarized.css" id="theme">
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
@@ -29,7 +29,9 @@
           data-markdown="slides/aboutme.md" 
           data-background="#ffffff">
         </section>
-        <section data-markdown="slides/tesler.md"></section>
+
+        <section data-markdown="slides/experimental.md"></section>
+        <!-- <section data-markdown="slides/tesler.md"></section> -->
       </div>
     </div>
 
@@ -42,6 +44,7 @@
       // - https://github.com/hakimel/reveal.js#dependencies
       Reveal.initialize({
         history: true,
+        transition: 'none', // none/fade/slide/convex/concave/zoom
         dependencies: [
           { src: 'plugin/markdown/marked.js' },
           { src: 'plugin/markdown/markdown.js' },

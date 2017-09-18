@@ -1,4 +1,4 @@
 ## Kotlin Coroutines in Android
-#### Make Async Imperative Again
+#### Untangle your async code
 
 [@charlesjuliank](https://twitter.com/charlesjuliank)

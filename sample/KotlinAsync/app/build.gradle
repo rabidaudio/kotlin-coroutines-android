@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "audio.rabid.talks.kotlinasync"
         minSdkVersion 19
@@ -22,29 +22,32 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
 
+    // kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-
-
-
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.15'
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.15'
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-rx1:0.15'
-
+    // rx java
     compile 'io.reactivex:rxjava:1.2.7'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxkotlin:1.0.0-RC2'
 
+    // coroutines
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.15'
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.15'
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-rx1:0.15'
 
+    // android support
+    compile 'com.android.support:appcompat-v7:25.3.1'
+
+    // retrofit
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-moshi:2.2.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
+//    compile 'com.squareup.retrofit2:converter-moshi:2.2.0'
+//    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
 
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    // tests
     testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }
