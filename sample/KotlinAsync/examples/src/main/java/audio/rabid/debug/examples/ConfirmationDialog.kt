@@ -1,4 +1,4 @@
-package audio.rabid.talks.kotlinasync.examples
+package audio.rabid.debug.examples
 
 import android.app.Activity
 import android.support.v7.app.AlertDialog

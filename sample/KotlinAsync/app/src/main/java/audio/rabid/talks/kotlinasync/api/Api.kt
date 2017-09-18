@@ -1,6 +1,5 @@
 package audio.rabid.talks.kotlinasync.api
 
-import audio.rabid.talks.kotlinasync.api.DiagnosticTroubleCode
 import retrofit2.http.GET
 import retrofit2.http.Path
 import rx.Observable

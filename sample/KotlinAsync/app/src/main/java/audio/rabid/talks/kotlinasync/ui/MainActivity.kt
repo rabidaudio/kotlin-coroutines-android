@@ -9,6 +9,9 @@ import audio.rabid.talks.kotlinasync.backend.State
 import audio.rabid.talks.kotlinasync.helpers.ActivityResultMixin
 import audio.rabid.talks.kotlinasync.helpers.BaseActivity
 import audio.rabid.talks.kotlinasync.helpers.transaction
+import audio.rabid.talks.kotlinasync.ui.fragments.CodesFragment
+import audio.rabid.talks.kotlinasync.ui.fragments.ErrorFragment
+import audio.rabid.talks.kotlinasync.ui.fragments.InProgressFragment
 import audio.rabid.talks.kotlinasync.view_model.implementation.MockCoroutineViewModel
 import audio.rabid.talks.kotlinasync.view_model.CoroutineViewModel
 import kotlinx.coroutines.experimental.CancellationException

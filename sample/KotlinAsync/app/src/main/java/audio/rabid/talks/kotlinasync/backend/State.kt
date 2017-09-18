@@ -1,6 +1,7 @@
 package audio.rabid.talks.kotlinasync.backend
 
 import audio.rabid.talks.kotlinasync.api.DiagnosticTroubleCode
+import audio.rabid.talks.kotlinasync.ui.MainActivity
 
 /**
  * Created by cjk on 9/17/17.

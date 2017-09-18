@@ -15,4 +15,9 @@ abstract class BaseActivity : AppCompatActivity(), ActivityResultMixin {
         super<AppCompatActivity>.onActivityResult(requestCode, resultCode, data)
         super<ActivityResultMixin>.onActivityResult(requestCode, resultCode, data)
     }
+
+    override fun onDestroy() {
+        super<ActivityResultMixin>.onDestroy()
+        super<AppCompatActivity>.onDestroy()
+    }
 }

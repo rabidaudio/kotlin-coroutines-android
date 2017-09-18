@@ -1,4 +1,4 @@
-package audio.rabid.talks.kotlinasync.ui
+package audio.rabid.talks.kotlinasync.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
