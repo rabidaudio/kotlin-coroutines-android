@@ -10,35 +10,7 @@ import rx.Observable
 /**
  * Here's a rather contrived example of a suspending function
  */
-interface SimpleSuspendExample {
-
-    /**
-     * fire off a network request, and when it completes, come back with the result
-     */
-    suspend fun makeNetworkRequest(): String
-
-    /**
-     * Pop a confirmation dialog, suspend until dismissed, and return if they accepted or not
-     */
-    suspend fun showConfirmDialog(): Boolean
-
-    /**
-     * Start some long-running task on another thread, and suspend until it is complete
-     */
-    suspend fun doOffThread(data: String): Int
-
-    suspend fun example() {
-        val data = makeNetworkRequest()
-
-        val isConfirmed = showConfirmDialog()
-
-        if (isConfirmed) {
-            val result = doOffThread(data)
-            print(result)
-        }
-    }
-}
-
+s
 
 interface SimpleCallbackExample {
 

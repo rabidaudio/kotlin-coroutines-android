@@ -17,7 +17,12 @@ to runOnUI all get put in this list.
 
 
 
+Serializable coroutine states
+- hypothetically save work and pick it up later
 
+
+anko asReference
+https://github.com/Kotlin/anko/blob/master/anko/library/generated/coroutines/src/bg.kt
 
 
 

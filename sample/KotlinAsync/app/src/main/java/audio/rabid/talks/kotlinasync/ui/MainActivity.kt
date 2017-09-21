@@ -31,7 +31,6 @@ class MainActivity : BaseActivity(), ActivityResultMixin {
         super.onStart()
 
         launchSingleTask("mainTask", end = onStop) {
-
             viewModel.execute()
         }
     }
