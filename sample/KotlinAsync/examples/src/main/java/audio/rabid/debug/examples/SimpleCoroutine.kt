@@ -17,7 +17,8 @@ suspend fun delayedParseInt(i: String): Int {
     return suspendCoroutine { cont ->
         // this code gets executed immediately to set up the coroutine
 
-        Handler(Looper.getMainLooper()).postDelayed({
+        Thread {
+            Thread.sleep(1000)
             // some time later, use the continuation to resume from suspension
             try {
                 val result = i.toInt()
@@ -25,7 +26,7 @@ suspend fun delayedParseInt(i: String): Int {
             }catch (e: NumberFormatException) {
                 cont.resumeWithException(e)
             }
-        }, 1000)
+        }.start()
 
         // after leaving this method, the caller will suspend until resume is called
     }

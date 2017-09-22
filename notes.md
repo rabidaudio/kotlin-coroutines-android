@@ -91,6 +91,8 @@ and you don't have to have used our app to follow it.
 
 suspendCoroutine/suspendCancellableCoroutine -> a raw create method for a suspending function
 
+your bridge between callbacks and coroutines
+
 ## build up logic with suspend
 
 you can use all the normal imperative operations on them
@@ -199,7 +201,7 @@ Now you can await tasks like `getLastLocation()`
 ```kotlin
 launch(UI) {
   val locationClient = LocationServices.getFusedLocationProviderClient(this)
-  locationClient.lastLocation.await()
+  val location = locationClient.lastLocation.await()
 }
 ```
 
@@ -321,6 +323,12 @@ suspend fun saveUser(db: SQLiteDatabase, user: User) = async(CommonPool) {
 ```
 
 ## concurrency
+
+async/await
+
+## Testing
+
+runBlocking
 
 ## Many other coroutine features
 

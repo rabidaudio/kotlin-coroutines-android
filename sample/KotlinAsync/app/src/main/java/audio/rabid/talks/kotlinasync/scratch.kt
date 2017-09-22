@@ -1,29 +1,26 @@
 import android.app.Activity
+import android.os.AsyncTask
 import android.os.Bundle
+import android.widget.TextView
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.UI
 
-interface SimpleSuspendExample {
 
-    suspend fun makeNetworkRequest(): List<String>
-    suspend fun showConfirmDialog(): Boolean
-    suspend fun doOffThread(data: String): Int
+interface SuspendExample {
 
-    suspend fun example() {
-        val isConfirmed = showConfirmDialog()
+suspend fun doFirst(): String
+suspend fun doSecond(): Boolean
+suspend fun doThird(data: String)
 
-        if (isConfirmed) {
-            val data = makeNetworkRequest()
-            data.forEach { item ->
-                val result = doOffThread(item)
-                print(result)
-            }
-        } else {
-            print("denied")
-        }
+suspend fun example() {
+    val data = doFirst()
+    if (doSecond()) {
+        doThird(data)
     }
-
 }
+}
+
+
 
 
 abstract class SActivity : Activity(), SimpleSuspendExample {
