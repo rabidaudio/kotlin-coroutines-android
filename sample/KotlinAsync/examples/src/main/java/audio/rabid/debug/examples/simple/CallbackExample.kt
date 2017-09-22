@@ -8,8 +8,8 @@ import android.widget.TextView
 interface CallbackExample {
 
     fun showConfirmDialogCallback(callback: (Boolean) -> Unit)
-    fun makeNetworkRequestCallback(callback: (List<String>?, Exception?) -> Unit)
-    fun doOffThreadCallback(data: String, callback: (Int) -> Unit)
+    fun loadWordsFromNetworkCallback(callback: (List<String>?, Exception?) -> Unit)
+    fun findCountInFileCallback(data: String, callback: (Int) -> Unit)
     val textView: TextView
 
     fun example() {
@@ -19,25 +19,25 @@ interface CallbackExample {
                 return@showConfirmDialogCallback
             }
             textView.text = "loading"
-            makeNetworkRequestCallback { data, error ->
+            loadWordsFromNetworkCallback { words, error ->
                 if (error != null) {
                     textView.text = "network error"
                 } else {
                     textView.text = ""
-                    doOffThreadForAllData(data!!) { result ->
-                        textView.append(result.toString() + "\n")
+                    findCountInFileRecursive(words!!) { word, count ->
+                        textView.append("$word: $count\n")
                     }
                 }
             }
         }
     }
 
-    private fun doOffThreadForAllData(data: List<String>, callback: (Int) -> Unit) {
-        if (data.isEmpty()) return
-        val current = data.first()
-        doOffThreadCallback(current) { result ->
-            callback(result)
-            doOffThreadForAllData(data.subList(1, data.size), callback)
+    private fun findCountInFileRecursive(remainingWords: List<String>, callback: (String, Int) -> Unit) {
+        if (remainingWords.isEmpty()) return
+        val currentWord = remainingWords.first()
+        findCountInFileCallback(currentWord) { count ->
+            callback(currentWord, count)
+            findCountInFileRecursive(remainingWords.subList(1, remainingWords.size), callback)
         }
     }
 }

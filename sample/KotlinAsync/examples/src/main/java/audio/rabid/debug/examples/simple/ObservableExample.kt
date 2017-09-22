@@ -2,30 +2,26 @@ package audio.rabid.debug.examples.simple
 
 import android.widget.TextView
 import rx.Observable
+import rx.Subscription
 
 /**
  * Created by cjk on 9/21/17.
  */
 interface ObservableExample {
 
-    fun makeNetworkRequest(): Observable<List<String>>
     fun showConfirmDialog(): Observable<Boolean>
-    fun doLongTask(data: String): Observable<Int>
+    fun loadWordsFromNetwork(): Observable<List<String>>
+    fun findCountInFile(data: String): Observable<Int>
     val textView: TextView
 
-    fun example() {
-        showConfirmDialog().flatMap { isConfirmed ->
+    fun example():Subscription {
+        return showConfirmDialog().flatMap { isConfirmed ->
             if (!isConfirmed) Observable.just("denied")
-            else makeNetworkRequest().flatMap { data ->
-                // what if the doOffThread method varies
-                // in execution time for each result?
-                // Will they come in out of order?
-                // Is there another flatMap alternative
-                // where the order is preserved?
-                // I honestly don't know.
-                Observable.from(data)
-                        .flatMap { result -> doLongTask(result) }
-                        .map { it.toString() }
+            else loadWordsFromNetwork().flatMap { words ->
+                Observable.from(words)
+                        .flatMap { word ->
+                            findCountInFile(word).map { count -> "$word: $count\n" }
+                        }
                         .startWith("")
                         .reduce("") { a, b -> a + b }
                         .onErrorReturn { "network error" }

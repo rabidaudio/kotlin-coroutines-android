@@ -7,9 +7,9 @@ import android.widget.TextView
  */
 interface SuspendExample {
 
-    suspend fun makeNetworkRequest(): List<String>
     suspend fun showConfirmDialog(): Boolean
-    suspend fun doLongTask(data: String): Int
+    suspend fun loadWordsFromNetwork(): List<String>
+    suspend fun findCountInFile(word: String): Int
     val textView: TextView
 
     suspend fun example() {
@@ -20,11 +20,11 @@ interface SuspendExample {
         }
         textView.text = "loading"
         try {
-            val data = makeNetworkRequest()
+            val data = loadWordsFromNetwork()
             textView.text = ""
-            data.forEach { item ->
-                val result = doLongTask(item)
-                textView.append(result.toString() + "\n")
+            data.forEach { word ->
+                val count = findCountInFile(word)
+                textView.append("$word: $count\n")
             }
         } catch (e: Throwable) {
             textView.text = "network error"

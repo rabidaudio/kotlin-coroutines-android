@@ -11,39 +11,36 @@ import java.util.concurrent.BlockingQueue
  */
 interface AsyncTaskExample {
 
-    fun showConfirmDialogBlocking()
-    fun makeNetworkRequestBlocking(): List<String>
-    fun doOffThreadBlocking(data: String): Int
+    fun showConfirmDialog()
+    fun loadWordsFromNetworkBlocking(): List<String>
+    fun findCountInFileBlocking(data: String): Int
     val textView: TextView
 
     val isConfirmedQueue: BlockingQueue<Boolean>
 
-    fun example() = SimpleAsyncTask().execute(this)
+    fun example() = SimpleAsyncTask(this).execute()
 }
 
-class SimpleAsyncTask : AsyncTask<AsyncTaskExample, String, Unit>() {
+class SimpleAsyncTask(val parent: AsyncTaskExample) : AsyncTask<Unit, String, Unit>() {
 
-    private lateinit var iface: AsyncTaskExample
-
-    override fun doInBackground(vararg params: AsyncTaskExample) {
-        iface = params[0]
-        iface.showConfirmDialogBlocking()
+    override fun doInBackground(vararg params: Unit) {
+        parent.showConfirmDialog()
         // we can't do wait()/notify() in kotlin,
         // so we use a blocking queue here
-        val isConfirmed = iface.isConfirmedQueue.take()
+        val isConfirmed = parent.isConfirmedQueue.take()
         if (!isConfirmed) {
             onProgressUpdate("cancelled")
             return
         }
         onProgressUpdate("loading")
         try {
-            val data = iface.makeNetworkRequestBlocking()
+            val words = parent.loadWordsFromNetworkBlocking()
             onProgressUpdate("")
-            val results = mutableListOf<String>()
-            data.forEach { item ->
-                val result = iface.doOffThreadBlocking(item)
-                results.add(result.toString())
-                onProgressUpdate(*results.toTypedArray())
+            val counts = mutableListOf<String>()
+            words.forEach { word ->
+                val count = parent.findCountInFileBlocking(word)
+                counts.add("$word: $count\n")
+                onProgressUpdate(*counts.toTypedArray())
             }
         } catch (e: Exception) {
             onProgressUpdate("network error")
@@ -51,7 +48,7 @@ class SimpleAsyncTask : AsyncTask<AsyncTaskExample, String, Unit>() {
     }
 
     override fun onProgressUpdate(vararg values: String?) {
-        iface.textView.text = values.joinToString("\n")
+        parent.textView.text = values.joinToString("\n")
     }
 }
 

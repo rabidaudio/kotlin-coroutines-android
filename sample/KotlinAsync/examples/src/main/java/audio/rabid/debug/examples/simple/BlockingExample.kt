@@ -5,11 +5,11 @@ import android.widget.TextView
 /**
  * Created by cjk on 9/21/17.
  */
-interface NonAsyncExample {
+interface BlockingExample {
 
     fun showConfirmDialog(): Boolean
-    fun makeNetworkRequest(): List<String>
-    fun doLongTask(item: String): Int
+    fun loadWordsFromNetwork(): List<String>
+    fun findCountInFile(item: String): Int
     val textView: TextView
 
     fun example() {
@@ -20,13 +20,13 @@ interface NonAsyncExample {
         }
         textView.text = "loading"
         try {
-            val data = makeNetworkRequest()
+            val words = loadWordsFromNetwork()
             textView.text = ""
-            data.forEach { item ->
-                val result = doLongTask(item)
-                textView.append(result.toString() + "\n")
+            words.forEach { word ->
+                val count = findCountInFile(word)
+                textView.append("$word: $count\n")
             }
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             textView.text = "network error"
         }
     }
