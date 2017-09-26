@@ -1,6 +1,6 @@
 # Kotlin Coroutines In Android - Samples
 
-This project contains some example code to go with my talk, given at Connect.Tech 2017.
+This project contains some example code to go with my talk, given at Connect.Tech 2017. [View Slides](https://speakerdeck.com/rabidaudio/kotlin-coroutines-in-android)
 
 There are two modules. 
 
