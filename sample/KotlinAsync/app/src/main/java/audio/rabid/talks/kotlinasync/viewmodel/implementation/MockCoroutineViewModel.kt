@@ -21,7 +21,7 @@ class MockCoroutineViewModel(private val activity: MainActivity) : CoroutineView
 
     suspend override fun searchForSensors(): List<BluetoothDevice> {
         delay(1500) // simulate search time
-        return when((0..4).random()) {
+        return when(1) {
             0 -> emptyList()
             1 -> listOf(
                     BluetoothDevice(address = "AA:BB:CC:DD:EE:FF", name = "FIXD"),

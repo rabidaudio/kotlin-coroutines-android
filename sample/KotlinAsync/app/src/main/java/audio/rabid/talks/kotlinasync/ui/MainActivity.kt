@@ -8,6 +8,7 @@ import audio.rabid.talks.kotlinasync.backend.BluetoothDevice
 import audio.rabid.talks.kotlinasync.backend.State
 import audio.rabid.talks.kotlinasync.helpers.ActivityResultMixin
 import audio.rabid.talks.kotlinasync.helpers.BaseActivity
+import audio.rabid.talks.kotlinasync.helpers.JobManagerMixin.ManagedJob.LifecycleEnd.onDestroy
 import audio.rabid.talks.kotlinasync.helpers.JobManagerMixin.ManagedJob.LifecycleEnd.onStop
 import audio.rabid.talks.kotlinasync.helpers.transaction
 import audio.rabid.talks.kotlinasync.ui.fragments.CodesFragment
@@ -25,14 +26,16 @@ class MainActivity : BaseActivity(), ActivityResultMixin {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // note: because we start an activity for result in our coroutine, our job needs to
+        // be able to survive onStart/onStop. So instead we start it in onCreate and end it
+        // in onDestroy. Most jobs you will probably want to start in onStart and end in onStop
+        // though.
+        restartJob()
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        // note: if we wanted this process to continue while the screen was off or another
-        // activity was active, we can move this to onCreate and change the end to onDestroy
-        launchSingleTask("mainTask", end = onStop) {
+    fun restartJob() {
+        launchSingleTask("mainTask", end = onDestroy) {
             viewModel.execute()
         }
     }

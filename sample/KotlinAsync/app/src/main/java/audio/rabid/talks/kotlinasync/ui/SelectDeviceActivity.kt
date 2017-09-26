@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -51,10 +52,13 @@ class SelectDeviceActivity : AppCompatActivity() {
         : ArrayAdapter<BluetoothDevice>(context, android.R.layout.simple_list_item_2, devices) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            return super.getView(position, convertView, parent).apply {
+            return (convertView ?: parent.inflate()).apply {
                 (findViewById(android.R.id.text1) as TextView).text = getItem(position).name
                 (findViewById(android.R.id.text2) as TextView).text = getItem(position).address
             }
         }
+
+        private fun ViewGroup?.inflate(): View
+                = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_2, this, false)
     }
 }
