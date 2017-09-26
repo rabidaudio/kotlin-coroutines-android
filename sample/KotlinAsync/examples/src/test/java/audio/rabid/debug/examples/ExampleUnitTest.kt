@@ -1,4 +1,4 @@
-package audio.rabid.talks.kotlinasync
+package audio.rabid.debug.examples
 
 import com.winterbe.expekt.expect
 import kotlinx.coroutines.experimental.CommonPool

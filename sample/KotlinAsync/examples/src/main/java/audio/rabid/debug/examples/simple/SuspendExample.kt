@@ -4,6 +4,10 @@ import android.widget.TextView
 
 /**
  * Created by cjk on 9/21/17.
+ *
+ * This is the flow using coroutines. Note that it is
+ * identical to [BlockingExample] except for the suspend
+ * keywords.
  */
 interface SuspendExample {
 

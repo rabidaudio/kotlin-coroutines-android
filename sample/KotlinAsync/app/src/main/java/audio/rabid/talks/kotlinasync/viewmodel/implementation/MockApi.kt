@@ -1,4 +1,4 @@
-package audio.rabid.talks.kotlinasync.view_model.implementation
+package audio.rabid.talks.kotlinasync.viewmodel.implementation
 
 import audio.rabid.talks.kotlinasync.api.Api
 import audio.rabid.talks.kotlinasync.api.DiagnosticTroubleCode

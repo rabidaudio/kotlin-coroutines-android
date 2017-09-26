@@ -27,7 +27,6 @@ kotlin { experimental { coroutines 'enable' } }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-
     // kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
@@ -37,9 +36,16 @@ dependencies {
     compile 'io.reactivex:rxkotlin:1.0.0-RC2'
 
     // coroutines
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.15'
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.15'
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-rx1:0.15'
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.18'
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.18'
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-rx1:0.18'
+
+    // tests
+    testCompile "org.robolectric:robolectric:3.4.2"
+
+    testCompile('com.winterbe:expekt:0.5.0') {
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+    }
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

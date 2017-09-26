@@ -1,4 +1,4 @@
-package audio.rabid.talks.kotlinasync.view_model
+package audio.rabid.talks.kotlinasync.viewmodel
 
 import android.bluetooth.BluetoothDevice
 import audio.rabid.talks.kotlinasync.backend.Sensor

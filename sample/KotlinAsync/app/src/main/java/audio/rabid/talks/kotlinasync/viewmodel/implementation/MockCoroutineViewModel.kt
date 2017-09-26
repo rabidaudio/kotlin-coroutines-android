@@ -1,11 +1,11 @@
-package audio.rabid.talks.kotlinasync.view_model.implementation
+package audio.rabid.talks.kotlinasync.viewmodel.implementation
 
 import audio.rabid.talks.kotlinasync.backend.BluetoothDevice
 import audio.rabid.talks.kotlinasync.backend.Sensor
 import audio.rabid.talks.kotlinasync.backend.State
 import audio.rabid.talks.kotlinasync.helpers.random
 import audio.rabid.talks.kotlinasync.ui.MainActivity
-import audio.rabid.talks.kotlinasync.view_model.CoroutineViewModel
+import audio.rabid.talks.kotlinasync.viewmodel.CoroutineViewModel
 import kotlinx.coroutines.experimental.delay
 
 /**

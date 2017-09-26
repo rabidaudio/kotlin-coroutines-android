@@ -11,7 +11,7 @@ import kotlinx.coroutines.experimental.Job;
 
 public class CallingCoroutinesFromKotlin {
 
-    JavaAccessibleCoroutine javaAccessibleCoroutine = new JavaAccessibleCoroutine();
+    private JavaAccessibleCoroutine javaAccessibleCoroutine = new JavaAccessibleCoroutine();
 
     void callCoroutine() {
 

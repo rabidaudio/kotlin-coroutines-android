@@ -4,6 +4,9 @@ import android.widget.TextView
 
 /**
  * Created by cjk on 9/21/17.
+ *
+ * This is the direct implementation of the flow. However,
+ * we can't do this because we'd be blocking the main thread.
  */
 interface BlockingExample {
 

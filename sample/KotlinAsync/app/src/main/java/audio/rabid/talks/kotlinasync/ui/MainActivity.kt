@@ -13,8 +13,8 @@ import audio.rabid.talks.kotlinasync.helpers.transaction
 import audio.rabid.talks.kotlinasync.ui.fragments.CodesFragment
 import audio.rabid.talks.kotlinasync.ui.fragments.ErrorFragment
 import audio.rabid.talks.kotlinasync.ui.fragments.InProgressFragment
-import audio.rabid.talks.kotlinasync.view_model.CoroutineViewModel
-import audio.rabid.talks.kotlinasync.view_model.implementation.MockCoroutineViewModel
+import audio.rabid.talks.kotlinasync.viewmodel.CoroutineViewModel
+import audio.rabid.talks.kotlinasync.viewmodel.implementation.MockCoroutineViewModel
 import kotlinx.coroutines.experimental.CancellationException
 import kotlinx.coroutines.experimental.suspendCancellableCoroutine
 
@@ -30,13 +30,21 @@ class MainActivity : BaseActivity(), ActivityResultMixin {
     override fun onStart() {
         super.onStart()
 
+        // note: if we wanted this process to continue while the screen was off or another
+        // activity was active, we can move this to onCreate and change the end to onDestroy
         launchSingleTask("mainTask", end = onStop) {
             viewModel.execute()
         }
     }
 
     fun onStateChanged(state: State) {
-        supportFragmentManager.transaction {
+        // WARNING: one caveat to showing fragments within coroutines
+        // is that your fragment change code could be called after saveInstanceState
+        // (if the screen turns off but your job keeps running). If you use saveInstanceState
+        // in your fragments, your coroutine will need to suspend until the UI resumes.
+        // If you don't use saveInstanceState, you can run your transactions allowing state
+        // loss and have nothing to worry about.
+        supportFragmentManager.transaction(allowingStateLoss = true) {
             replace(R.id.fragment_container, getFragmentForState(state), "main")
         }
     }

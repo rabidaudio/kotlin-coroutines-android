@@ -2,6 +2,8 @@ package audio.rabid.debug.examples.simple
 
 /**
  * Created by cjk on 9/21/17.
+ *
+ * This is one way to conceptualize what is going on under the hood with coroutines
  */
 
 class Continuation(val step: Int, val scope: Map<String, Any?>, val error: Throwable?)

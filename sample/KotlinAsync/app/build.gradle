@@ -48,12 +48,6 @@ dependencies {
 
     // tests
     testCompile 'junit:junit:4.12'
-    testCompile "org.robolectric:robolectric:3.4.2"
-
-    testCompile('com.winterbe:expekt:0.5.0') {
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
-    }
-
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

@@ -21,7 +21,13 @@ interface AsyncTaskExample {
     fun example() = SimpleAsyncTask(this).execute()
 }
 
-class SimpleAsyncTask(val parent: AsyncTaskExample) : AsyncTask<Unit, String, Unit>() {
+class SimpleAsyncTask(
+        /**
+         * Warning: storing context like this can cause a memory leak if the task isn't
+         * canceled correctly at the end of the UI lifecycle
+         */
+        val parent: AsyncTaskExample
+) : AsyncTask<Unit, String, Unit>() {
 
     override fun doInBackground(vararg params: Unit) {
         parent.showConfirmDialog()
@@ -47,11 +53,17 @@ class SimpleAsyncTask(val parent: AsyncTaskExample) : AsyncTask<Unit, String, Un
         }
     }
 
+    /**
+     * We are cheating a little bit by using onProgressUpdate to update the UI
+     */
     override fun onProgressUpdate(vararg values: String?) {
         parent.textView.text = values.joinToString("\n")
     }
 }
 
+/**
+ * One hacky way to block the async task until the dialog box is completed
+ */
 fun AsyncTaskExample.exampleShowConfirmDialogImplementation(context: Context) {
     AlertDialog.Builder(context)
             .setPositiveButton("Yes", { _, _ -> isConfirmedQueue.put(true) })

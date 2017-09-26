@@ -4,6 +4,12 @@ import android.widget.TextView
 
 /**
  * Created by cjk on 9/21/17.
+ *
+ * This is a way to implement the flow using callbacks. We've changed
+ * the signature of each async method to accept callbacks.
+ *
+ * Note that this is not cancelable and therefore susceptible to a memory leak
+ * of context
  */
 interface CallbackExample {
 
@@ -32,6 +38,10 @@ interface CallbackExample {
         }
     }
 
+    /**
+     * This is a hacky way to make callbacks serial - call itself recursively with all remaining
+     * elements until empty
+     */
     private fun findCountInFileRecursive(remainingWords: List<String>, callback: (String, Int) -> Unit) {
         if (remainingWords.isEmpty()) return
         val currentWord = remainingWords.first()
