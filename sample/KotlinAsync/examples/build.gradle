@@ -40,6 +40,8 @@ dependencies {
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.18'
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-rx1:0.18'
 
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+
     // tests
     testCompile "org.robolectric:robolectric:3.4.2"
 

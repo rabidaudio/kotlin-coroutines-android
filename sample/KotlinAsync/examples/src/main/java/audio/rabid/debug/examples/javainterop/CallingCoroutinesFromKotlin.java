@@ -29,6 +29,7 @@ public class CallingCoroutinesFromKotlin {
 
         if (deferredFoo.isCompleted()) {
             String result = deferredFoo.getCompleted();
+            System.out.println(result);
         }
     }
 }

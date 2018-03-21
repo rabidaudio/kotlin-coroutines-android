@@ -1,4 +1,4 @@
-package audio.rabid.debug.examples.simple
+package audio.rabid.debug.examples
 
 /**
  * Created by cjk on 9/21/17.

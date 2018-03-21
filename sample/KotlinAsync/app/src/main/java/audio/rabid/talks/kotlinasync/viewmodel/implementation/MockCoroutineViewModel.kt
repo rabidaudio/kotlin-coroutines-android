@@ -19,7 +19,7 @@ class MockCoroutineViewModel(private val activity: MainActivity) : CoroutineView
         activity.onStateChanged(state)
     }
 
-    suspend override fun searchForSensors(): List<BluetoothDevice> {
+    override suspend fun searchForSensors(): List<BluetoothDevice> {
         delay(1500) // simulate search time
         return when(1) {
             0 -> emptyList()
@@ -31,13 +31,13 @@ class MockCoroutineViewModel(private val activity: MainActivity) : CoroutineView
         }
     }
 
-    suspend override fun promptForWhichVehicle(devicesInRange: List<BluetoothDevice>)
+    override suspend fun promptForWhichVehicle(devicesInRange: List<BluetoothDevice>)
             = activity.promptForSelectedDevice(devicesInRange)
 
-    suspend override fun connectToSensor(device: BluetoothDevice): Sensor {
+    override suspend fun connectToSensor(device: BluetoothDevice): Sensor {
         delay(1000)
         return MockSensor()
     }
 
-    suspend override fun promptForIgnition() = activity.showIgnitionDialog()
+    override suspend fun promptForIgnition() = activity.showIgnitionDialog()
 }

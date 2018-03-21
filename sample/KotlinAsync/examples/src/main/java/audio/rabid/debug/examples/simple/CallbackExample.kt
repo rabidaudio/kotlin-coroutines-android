@@ -13,41 +13,53 @@ import android.widget.TextView
  */
 interface CallbackExample {
 
-    fun showConfirmDialogCallback(callback: (Boolean) -> Unit)
-    fun loadWordsFromNetworkCallback(callback: (List<String>?, Exception?) -> Unit)
-    fun findCountInFileCallback(data: String, callback: (Int) -> Unit)
+    fun loadFriends(callback: (Exception?, List<Friend>?) -> Unit)
+    fun searchContactsForFriends(friends: List<Friend>, callback: (List<Contact>) -> Unit)
+
     val textView: TextView
 
+    fun showRetryDialog(callback: (Boolean) -> Unit)
+    fun hasPermissions(): Boolean
+    fun requestPermissions(callback: (Boolean) -> Unit)
+
     fun example() {
-        showConfirmDialogCallback { isConfirmed ->
-            if (!isConfirmed) {
-                textView.text = "cancelled"
-                return@showConfirmDialogCallback
-            }
-            textView.text = "loading"
-            loadWordsFromNetworkCallback { words, error ->
-                if (error != null) {
-                    textView.text = "network error"
+        textView.text = "Loading"
+        loadFriendsWithRetry { err, friends ->
+            if (err != null) {
+                textView.text = "Network Unavailable"
+            } else {
+                if (!hasPermissions()) {
+                    requestPermissions { permissionsGranted ->
+                        if (!permissionsGranted) {
+                            textView.text = "Contacts Permission required"
+                        } else {
+                            searchContactsForFriends(friends!!) { contacts ->
+                                textView.text = "${contacts.size} of your friends are in your contacts already"
+                            }
+                        }
+                    }
                 } else {
-                    textView.text = ""
-                    findCountInFileRecursive(words!!) { word, count ->
-                        textView.append("$word: $count\n")
+                    searchContactsForFriends(friends!!) { contacts ->
+                        textView.text = "${contacts.size} of your friends are in your contacts already"
                     }
                 }
             }
         }
     }
 
-    /**
-     * This is a hacky way to make callbacks serial - call itself recursively with all remaining
-     * elements until empty
-     */
-    private fun findCountInFileRecursive(remainingWords: List<String>, callback: (String, Int) -> Unit) {
-        if (remainingWords.isEmpty()) return
-        val currentWord = remainingWords.first()
-        findCountInFileCallback(currentWord) { count ->
-            callback(currentWord, count)
-            findCountInFileRecursive(remainingWords.subList(1, remainingWords.size), callback)
+    fun loadFriendsWithRetry(callback: (Exception?, List<Friend>?) -> Unit) {
+        loadFriends { err, friends ->
+            if (err == null) {
+                callback.invoke(null, friends)
+            } else {
+                showRetryDialog { shouldRetry ->
+                    if (shouldRetry) {
+                        loadFriendsWithRetry(callback)
+                    } else {
+                        callback.invoke(err, null)
+                    }
+                }
+            }
         }
     }
 }

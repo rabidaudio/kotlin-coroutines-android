@@ -3,6 +3,7 @@ package audio.rabid.debug.examples.simple
 import android.widget.TextView
 import rx.Observable
 import rx.Subscription
+import rx.android.schedulers.AndroidSchedulers
 
 /**
  * Created by cjk on 9/21/17.
@@ -14,40 +15,49 @@ import rx.Subscription
  * we can cancel the task, avoiding a memory leak.
  *
  * However, note how dense the logic is, with the flatmap callback hell,
- * the reduce to accumulate state, the [Observable.startWith] coming after
- * the [findCountInFile] call in the code even though it happens before.
+ * the confusing [Observable.retryWhen], the [Observable.startWith] coming
+ * at the end of the code even though it happens first.
  * This is really hard for even an Rx expert to follow (imagine coming
  * back to this code after a few weeks and trying to figure it out),
  * and basically impossible for an rxjava newbie.
- *
- * Another note: I think there's a logic error in lines 36-38. If
- * [findCountInFile] takes a variable amount of time to complete, will
- * the flatmap on 37 maintain the order from the observable, or emit in
- * the order of completion? If the latter, is there another operator
- * which will do the right thing? I would need to check the docs.
- * This is where subtle, hard-to-diagnose bugs enter your code base.
  */
 interface ObservableExample {
 
-    fun showConfirmDialog(): Observable<Boolean>
-    fun loadWordsFromNetwork(): Observable<List<String>>
-    fun findCountInFile(data: String): Observable<Int>
+    fun loadFriends(): Observable<List<Friend>>
+    fun searchContactsForFriends(friends: List<Friend>): Observable<List<Contact>>
+
     val textView: TextView
 
+    fun showRetryDialog(): Observable<Boolean>
+    fun hasPermissions(): Boolean
+    fun requestPermissions(): Observable<Boolean>
+
+    class NetworkError: Exception()
+    class NoPermissionError: Exception()
+
     fun example(): Subscription {
-        return showConfirmDialog().flatMap { isConfirmed ->
-            if (!isConfirmed) Observable.just("denied")
-            else loadWordsFromNetwork().flatMap { words ->
-                Observable.from(words)
-                        .flatMap { word ->
-                            findCountInFile(word).map { count -> "$word: $count\n" }
-                        }
-                        .startWith("")
-                        .reduce("") { a, b -> a + b }
-                        .onErrorReturn { "network error" }
+        return loadFriends().retryWhen {
+            showRetryDialog().flatMap { retry ->
+                if (retry) Observable.just(true)
+                else Observable.error<Boolean>(NetworkError())
             }
-        }.subscribe {
-            textView.text = it
-        }
+        }.flatMap { friends ->
+            val hasPermissionsStream = if (hasPermissions())
+                Observable.just(true)
+            else requestPermissions()
+            hasPermissionsStream.flatMap { hasPermissions ->
+                if (!hasPermissions) Observable.error(NoPermissionError())
+                else searchContactsForFriends(friends)
+            }.map { contacts ->
+                "${contacts.size} of your friends are in your contacts already"
+            }
+        }.onErrorReturn { e ->
+            when (e) {
+                is NetworkError -> "Network Unavailable"
+                is NoPermissionError -> "Contacts Permission required"
+                else -> throw e
+            }
+        }.startWith("Loading").observeOn(AndroidSchedulers.mainThread())
+                .subscribe { state -> textView.text = state }
     }
 }

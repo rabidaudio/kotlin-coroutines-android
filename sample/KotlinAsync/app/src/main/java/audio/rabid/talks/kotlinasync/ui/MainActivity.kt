@@ -6,10 +6,8 @@ import android.support.v7.app.AlertDialog
 import audio.rabid.talks.kotlinasync.R
 import audio.rabid.talks.kotlinasync.backend.BluetoothDevice
 import audio.rabid.talks.kotlinasync.backend.State
-import audio.rabid.talks.kotlinasync.helpers.ActivityResultMixin
 import audio.rabid.talks.kotlinasync.helpers.BaseActivity
-import audio.rabid.talks.kotlinasync.helpers.JobManagerMixin.ManagedJob.LifecycleEnd.onDestroy
-import audio.rabid.talks.kotlinasync.helpers.JobManagerMixin.ManagedJob.LifecycleEnd.onStop
+import audio.rabid.talks.kotlinasync.helpers.BaseActivity.ManagedJob.LifecycleEnd.*
 import audio.rabid.talks.kotlinasync.helpers.transaction
 import audio.rabid.talks.kotlinasync.ui.fragments.CodesFragment
 import audio.rabid.talks.kotlinasync.ui.fragments.ErrorFragment
@@ -19,7 +17,7 @@ import audio.rabid.talks.kotlinasync.viewmodel.implementation.MockCoroutineViewM
 import kotlinx.coroutines.experimental.CancellationException
 import kotlinx.coroutines.experimental.suspendCancellableCoroutine
 
-class MainActivity : BaseActivity(), ActivityResultMixin {
+class MainActivity : BaseActivity() {
 
     private val viewModel: CoroutineViewModel = MockCoroutineViewModel(this)
 
