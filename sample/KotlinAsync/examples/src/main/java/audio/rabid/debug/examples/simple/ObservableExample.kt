@@ -1,6 +1,8 @@
 package audio.rabid.debug.examples.simple
 
 import android.widget.TextView
+import audio.rabid.debug.examples.simple.models.Contact
+import audio.rabid.debug.examples.simple.models.Friend
 import rx.Observable
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers

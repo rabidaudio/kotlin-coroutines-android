@@ -1,6 +1,7 @@
 package audio.rabid.debug.examples
 
 import com.winterbe.expekt.expect
+import kotlinx.coroutines.experimental.CancellationException
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -50,5 +51,35 @@ class ExampleUnitTest {
         delay(500)
         job.cancel()
         expect(job.isCancelled).to.be.`true`
+    }
+
+    @Test
+    fun eatingCancellations() = runBlocking<Unit> {
+        var reachedEnd = false
+        val job = launch(CommonPool) {
+            try {
+                delay(1000)
+            }catch (e: CancellationException) {
+                // oops, we ate it
+            }
+            reachedEnd = true // this still happens because we didn't throw
+        }
+        delay(10)
+        job.cancel()
+        delay(10)
+        expect(reachedEnd).to.be.`true`
+    }
+
+    @Test
+    fun notEatingCancellations() = runBlocking<Unit> {
+        var reachedEnd = false
+        val job = launch(CommonPool) {
+            delay(1000)
+            reachedEnd = true // this still happens because we didn't throw
+        }
+        delay(10)
+        job.cancel()
+        delay(10)
+        expect(reachedEnd).to.be.`false`
     }
 }

@@ -1,6 +1,8 @@
 package audio.rabid.debug.examples.simple
 
 import android.widget.TextView
+import audio.rabid.debug.examples.simple.models.Contact
+import audio.rabid.debug.examples.simple.models.Friend
 
 /**
  * Created by cjk on 9/21/17.

@@ -5,7 +5,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.TextView
-import java.util.concurrent.Semaphore
+import audio.rabid.debug.examples.simple.models.Contact
+import audio.rabid.debug.examples.simple.models.Friend
 
 /**
  * Created by cjk on 3/19/18.
@@ -27,7 +28,7 @@ interface ThreadingExample {
 
     var dialogResult: Boolean
     var permissionResult: Boolean
-    val semaphore: Semaphore
+    val lock: Object
 
     fun example() {
         Thread(Runnable {
@@ -40,17 +41,11 @@ interface ThreadingExample {
                     friends = loadFriends()
                 } catch (e: Exception) {
                     runOnUiThread(Runnable {
-                        semaphore.acquire()
                         showRetryDialog()
                     })
                     try {
-                        // wait for main to acquire the lock
-                        while (semaphore.availablePermits() > 0) {
-                            Thread.sleep(10)
-                        }
                         // wait for main to finish with the lock
-                        semaphore.acquire()
-                        semaphore.release()
+                        lock.wait()
                     }catch (e: InterruptedException) {
                         return@Runnable
                     }
@@ -65,17 +60,11 @@ interface ThreadingExample {
 
             if (!hasPermissions()) {
                 runOnUiThread(Runnable {
-                    semaphore.acquire()
                     requestPermissions()
                 })
                 try {
-                    // wait for main to acquire the lock
-                    while (semaphore.availablePermits() > 0) {
-                        Thread.sleep(10)
-                    }
                     // wait for main to finish with the lock
-                    semaphore.acquire()
-                    semaphore.release()
+                    lock.wait()
                 }catch (e: InterruptedException) {
                     return@Runnable
                 }
@@ -99,11 +88,11 @@ interface ThreadingExample {
                 .setMessage("Do you want to try again?")
                 .setPositiveButton("yes") { _, _ ->
                     dialogResult = true
-                    semaphore.release()
+                    lock.notifyAll()
                 }
                 .setNegativeButton("no") { _, _ ->
                     dialogResult = false
-                    semaphore.release()
+                    lock.notifyAll()
                 }
                 .create().show()
     }
@@ -113,10 +102,10 @@ interface ThreadingExample {
             val granted = grantResults[0] == PackageManager.PERMISSION_GRANTED
             if (granted) {
                 permissionResult = true
-                semaphore.release()
+                lock.notifyAll()
             } else {
                 permissionResult = false
-                semaphore.release()
+                lock.notifyAll()
             }
         }
     }

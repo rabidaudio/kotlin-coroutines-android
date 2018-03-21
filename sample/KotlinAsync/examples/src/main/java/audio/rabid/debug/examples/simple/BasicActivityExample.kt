@@ -7,6 +7,8 @@ import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Build
 import android.widget.TextView
+import audio.rabid.debug.examples.simple.models.Contact
+import audio.rabid.debug.examples.simple.models.Friend
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -78,11 +80,8 @@ abstract class BasicActivityExample : Activity() {
     }
 
     fun searchContacts() {
-        Executors.newSingleThreadExecutor().execute {
-            val contacts = searchContactsForFriends(friends)
-            runOnUiThread {
-                textView.text = "${contacts.size} of your friends are in your contacts already"
-            }
-        }
+        // If you want to do this off the main thread, you can use a thread pool or handler or something
+        val contacts = searchContactsForFriends(friends)
+        textView.text = "${contacts.size} of your friends are in your contacts already"
     }
 }

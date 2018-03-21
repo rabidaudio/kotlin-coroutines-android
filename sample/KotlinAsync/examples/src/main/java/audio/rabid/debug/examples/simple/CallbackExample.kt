@@ -1,6 +1,8 @@
 package audio.rabid.debug.examples.simple
 
 import android.widget.TextView
+import audio.rabid.debug.examples.simple.models.Contact
+import audio.rabid.debug.examples.simple.models.Friend
 
 /**
  * Created by cjk on 9/21/17.
@@ -24,26 +26,28 @@ interface CallbackExample {
 
     fun example() {
         textView.text = "Loading"
-        loadFriendsWithRetry { err, friends ->
-            if (err != null) {
+        loadFriendsWithRetry { _, friends ->
+            if (friends == null) {
                 textView.text = "Network Unavailable"
-            } else {
-                if (!hasPermissions()) {
-                    requestPermissions { permissionsGranted ->
-                        if (!permissionsGranted) {
-                            textView.text = "Contacts Permission required"
-                        } else {
-                            searchContactsForFriends(friends!!) { contacts ->
-                                textView.text = "${contacts.size} of your friends are in your contacts already"
-                            }
-                        }
-                    }
-                } else {
-                    searchContactsForFriends(friends!!) { contacts ->
-                        textView.text = "${contacts.size} of your friends are in your contacts already"
+                return@loadFriendsWithRetry
+            }
+            if (!hasPermissions()) {
+                requestPermissions { permissionsGranted ->
+                    if (!permissionsGranted) {
+                        textView.text = "Contacts Permission required"
+                    } else {
+                        exampleStep2(friends)
                     }
                 }
+            } else {
+                exampleStep2(friends)
             }
+        }
+    }
+
+    fun exampleStep2(friends: List<Friend>) {
+        searchContactsForFriends(friends) { contacts ->
+            textView.text = "${contacts.size} of your friends are in your contacts already"
         }
     }
 
