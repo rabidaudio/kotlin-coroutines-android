@@ -1,27 +1,27 @@
-package audio.rabid.debug.examples.simple
+package audio.rabid.debug.examples.comparison
 
 import android.widget.TextView
-import audio.rabid.debug.examples.simple.models.Contact
-import audio.rabid.debug.examples.simple.models.Friend
+import audio.rabid.debug.examples.comparison.models.Contact
+import audio.rabid.debug.examples.comparison.models.Friend
 
 /**
  * Created by cjk on 9/21/17.
  *
- * This is the direct implementation of the flow. However,
- * we can't do this because we'd be blocking the main thread.
+ * This is the flow using coroutines. Note that it is
+ * identical to [ImperativeExample] except for the suspend keywords.
  */
-interface ImperativeExample {
+interface CoroutineExample {
 
-    fun loadFriends(): List<Friend>
-    fun searchContactsForFriends(friends: List<Friend>): List<Contact>
+    suspend fun loadFriends(): List<Friend>
+    suspend fun searchContactsForFriends(friends: List<Friend>): List<Contact>
 
     val textView: TextView
 
-    fun showRetryDialog(): Boolean
+    suspend fun showRetryDialog(): Boolean
     fun hasPermissions(): Boolean
-    fun requestPermissions(): Boolean
+    suspend fun requestPermissions(): Boolean
 
-    fun example() {
+    suspend fun example() {
         textView.text = "Loading"
         var friends: List<Friend>? = null
         do {

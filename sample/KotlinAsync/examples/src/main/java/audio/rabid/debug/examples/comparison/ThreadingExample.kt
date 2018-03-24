@@ -1,12 +1,12 @@
-package audio.rabid.debug.examples.simple
+package audio.rabid.debug.examples.comparison
 
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.TextView
-import audio.rabid.debug.examples.simple.models.Contact
-import audio.rabid.debug.examples.simple.models.Friend
+import audio.rabid.debug.examples.comparison.models.Contact
+import audio.rabid.debug.examples.comparison.models.Friend
 
 /**
  * Created by cjk on 3/19/18.

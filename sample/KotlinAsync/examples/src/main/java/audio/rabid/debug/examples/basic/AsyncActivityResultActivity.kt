@@ -1,4 +1,4 @@
-package audio.rabid.debug.examples
+package audio.rabid.debug.examples.basic
 
 import android.app.Activity
 import android.content.Intent
@@ -19,7 +19,9 @@ abstract class AsyncActivityResultActivity : Activity() {
     /**
      * Container object for calls to [android.app.Activity.onActivityResult]
      */
-    data class ActivityResult(val requestCode: Int, val resultCode: Int, val data: Intent?) {
+    data class ActivityResult(val requestCode: Int,
+                              val resultCode: Int,
+                              val data: Intent?) {
 
         val isOk get() = resultCode == Activity.RESULT_OK
     }
@@ -36,7 +38,7 @@ abstract class AsyncActivityResultActivity : Activity() {
                 // wait for an activity result with a matching request code
                 .filter { it.requestCode == requestCode }
                 // if the stream ends without a match, just return a canceled result
-                .awaitFirstOrDefault((ActivityResult(requestCode, Activity.RESULT_CANCELED, null)))
+                .awaitFirstOrDefault((ActivityResult(requestCode, RESULT_CANCELED, null)))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

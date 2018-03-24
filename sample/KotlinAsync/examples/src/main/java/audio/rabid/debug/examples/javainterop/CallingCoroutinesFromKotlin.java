@@ -15,7 +15,7 @@ public class CallingCoroutinesFromKotlin {
 
     void callCoroutine() {
 
-        // javaAccessibleCoroutine.foo() <-- doesn't work, requires Continuation
+//         javaAccessibleCoroutine.foo() <-- doesn't work, requires Continuation
 
         // however, Jobs and Promises are interoperable
 

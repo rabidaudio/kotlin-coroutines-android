@@ -1,4 +1,4 @@
-package audio.rabid.debug.examples
+package audio.rabid.debug.examples.basic
 
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async

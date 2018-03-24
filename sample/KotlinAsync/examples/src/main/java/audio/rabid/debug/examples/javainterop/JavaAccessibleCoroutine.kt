@@ -1,5 +1,7 @@
 package audio.rabid.debug.examples.javainterop
 
+import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.delay
@@ -16,11 +18,11 @@ class JavaAccessibleCoroutine {
         return "foo"
     }
 
-    fun createFooJob() = launch(UI) {
+    fun createFooJob(): Job = launch(UI) {
         print(foo())
     }
 
-    fun createFooDeferred() = async(UI) {
+    fun createFooDeferred(): Deferred<String> = async(UI) {
         foo()
     }
 }

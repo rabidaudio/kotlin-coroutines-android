@@ -1,4 +1,4 @@
-package audio.rabid.debug.examples
+package audio.rabid.debug.examples.basic
 
 import android.app.Activity
 import kotlinx.coroutines.experimental.CancellationException

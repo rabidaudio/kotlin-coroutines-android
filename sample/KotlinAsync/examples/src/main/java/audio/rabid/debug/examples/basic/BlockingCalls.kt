@@ -1,4 +1,4 @@
-package audio.rabid.debug.examples
+package audio.rabid.debug.examples.basic
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
@@ -13,7 +13,8 @@ data class User(val id: Int, val email: String, val name: String)
 
 suspend fun getUserById(db: SQLiteDatabase, id: Int): User? = async(CommonPool) {
 
-    db.query("users", arrayOf("id", "email", "name"), "id = ?", arrayOf(id.toString()), null, null, null).use { cursor ->
+    db.query("users", arrayOf("id", "email", "name"), "id = ?",
+            arrayOf(id.toString()), null, null, null).use { cursor ->
         if (cursor.count == 0)
             return@async null
         cursor.moveToFirst()

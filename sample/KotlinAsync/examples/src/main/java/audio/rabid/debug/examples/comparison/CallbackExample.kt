@@ -1,8 +1,8 @@
-package audio.rabid.debug.examples.simple
+package audio.rabid.debug.examples.comparison
 
 import android.widget.TextView
-import audio.rabid.debug.examples.simple.models.Contact
-import audio.rabid.debug.examples.simple.models.Friend
+import audio.rabid.debug.examples.comparison.models.Contact
+import audio.rabid.debug.examples.comparison.models.Friend
 
 /**
  * Created by cjk on 9/21/17.

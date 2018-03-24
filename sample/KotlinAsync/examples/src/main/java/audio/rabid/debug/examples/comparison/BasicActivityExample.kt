@@ -1,4 +1,4 @@
-package audio.rabid.debug.examples.simple
+package audio.rabid.debug.examples.comparison
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -7,12 +7,11 @@ import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Build
 import android.widget.TextView
-import audio.rabid.debug.examples.simple.models.Contact
-import audio.rabid.debug.examples.simple.models.Friend
+import audio.rabid.debug.examples.comparison.models.Contact
+import audio.rabid.debug.examples.comparison.models.Friend
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.concurrent.Executors
 
 /**
  * Created by cjk on 3/20/18.

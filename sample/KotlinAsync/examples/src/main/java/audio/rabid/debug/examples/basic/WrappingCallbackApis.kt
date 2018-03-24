@@ -1,23 +1,15 @@
-package audio.rabid.debug.examples
+package audio.rabid.debug.examples.basic
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
-import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.concurrent.CancellationException
-import java.util.concurrent.TimeUnit
 import kotlin.coroutines.experimental.suspendCoroutine
 
 /**
